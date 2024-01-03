@@ -41,6 +41,8 @@ export interface IEnv {
   APILLON_KEY: string;
   APILLON_SECRET: string;
   COLLECTION_UUID: string;
+
+  CAPTCHA_SECRET: string;
 }
 /**
  * Load variables from .env.
@@ -124,4 +126,9 @@ export const env = {
   APILLON_KEY: process.env["APILLON_KEY"],
   APILLON_SECRET: process.env["APILLON_SECRET"],
   COLLECTION_UUID: process.env["COLLECTION_UUID"],
+
+  /**
+   * Captcha
+   */
+  CAPTCHA_SECRET: process.env["CAPTCHA_SECRET"],
 };

@@ -50,6 +50,14 @@ export enum SystemErrorCode {
   EMAIL_SENDING_ERROR = 500002,
 }
 
+export enum AppEnvironment {
+  LOCAL_DEV = "local",
+  TEST = "testing",
+  DEV = "development",
+  STG = "staging",
+  PROD = "production",
+}
+
 /**
  * Authorization Error codes.
  */
@@ -69,6 +77,9 @@ export enum ValidatorErrorCode {
   PROFILE_EMAIL_NOT_VALID = 422002,
   PROFILE_EMAIL_ALREADY_TAKEN = 422003,
   USERS_NOT_PRESENT = 422004,
+  CAPTCHA_NOT_CONFIGURED = 422005,
+  CAPTCHA_NOT_PRESENT = 422006,
+  CAPTCHA_INVALID = 422007,
   DATA_MODEL_STATUS_MISSING = 422100,
   DATA_MODEL_INVALID_STATUS = 422101,
 }

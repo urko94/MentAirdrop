@@ -34,7 +34,11 @@ export class User extends BaseSqlModel {
    */
   @prop({
     parser: { resolver: stringTrimParser() },
-    populatable: [PopulateStrategy.DB, PopulateStrategy.ADMIN],
+    populatable: [
+      PopulateStrategy.DB,
+      PopulateStrategy.ADMIN,
+      PopulateStrategy.PROFILE,
+    ],
     serializable: [
       SerializedStrategy.DB,
       SerializedStrategy.PROFILE,

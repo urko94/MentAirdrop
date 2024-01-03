@@ -8,7 +8,6 @@ import { setupTestDatabase, clearTestDatabase } from "../helpers/migrations";
 import { AirdropStatus, User } from "../../models/user";
 import { env } from "../../config/env";
 import { generateAdminAuthToken } from "../../lib/jwt";
-import { ethers } from "ethers";
 let stage: Stage;
 let token;
 

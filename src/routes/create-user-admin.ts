@@ -1,37 +1,41 @@
 import { Application } from "express";
 import { NextFunction, Request, Response } from "../http";
 import { PopulateStrategy } from "../config/values";
+import { AuthenticateAdmin } from "../middlewares/authentication";
+import { BatchUsers } from "../models/batch-users";
 import { ValidationError } from "../lib/errors";
-import { User } from "../models/user";
-import { checkCaptcha } from "../lib/captcha";
 
 /**
  * Installs new route on the provided application.
  * @param app ExpressJS application.
  */
 export function inject(app: Application) {
-  app.post("/users", (req: Request, res: Response, next: NextFunction) => {
-    resolve(req, res).catch(next);
-  });
+  app.post(
+    "/users/create",
+    AuthenticateAdmin,
+    (req: Request, res: Response, next: NextFunction) => {
+      resolve(req, res).catch(next);
+    }
+  );
 }
 
 export async function resolve(req: Request, res: Response): Promise<void> {
   const { context, body } = req;
-
-  await checkCaptcha(body.token);
-
-  const user = new User({}, context).populate(body, PopulateStrategy.PROFILE);
+  const users = new BatchUsers({}, context).populate(
+    body,
+    PopulateStrategy.ADMIN
+  );
 
   try {
-    await user.validate();
+    await users.validate();
   } catch (err) {
-    await user.handle(err);
+    await users.handle(err);
   }
 
-  if (user.isValid()) {
-    await user.create();
+  if (users.isValid()) {
+    await users.create();
     return res.respond(201, { success: "ok" });
   } else {
-    throw new ValidationError(user, context, "create-user");
+    throw new ValidationError(users, context, "create-user");
   }
 }

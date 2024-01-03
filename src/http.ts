@@ -11,6 +11,7 @@ import { inject as injectErrors } from "./middlewares/errors";
 import { inject as injectDataParser } from "./middlewares/parser";
 import { inject as injectRenders } from "./middlewares/renders";
 import { inject as injectGetRoot } from "./routes/get-root";
+import { inject as injectCreateUserAdmin } from "./routes/create-user-admin";
 import { inject as injectCreateUser } from "./routes/create-user";
 import { inject as injectGetUser } from "./routes/get-user";
 import { inject as injectGetStatistics } from "./routes/get-statistics";
@@ -71,6 +72,7 @@ export class HttpServer {
     // ROUTES
     injectGetRoot(this.app);
     injectClaimAirdrop(this.app);
+    injectCreateUserAdmin(this.app);
     injectCreateUser(this.app);
     injectGetStatistics(this.app);
     injectGetUser(this.app);
