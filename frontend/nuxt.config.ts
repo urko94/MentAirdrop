@@ -75,7 +75,7 @@ export default defineNuxtConfig({
         ? ['naive-ui', 'vueuc', '@css-render/vue3-ssr', '@juggle/resize-observer']
         : ['@juggle/resize-observer'],
   },
-
+  ssr: false,
   app: {
     head: {
       htmlAttrs: { lang: 'en' },

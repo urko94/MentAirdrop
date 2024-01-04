@@ -12,7 +12,7 @@ useHead({
 
 async function signUp() {
   const res = await $api.post('/users', {
-    token: '',
+    token: captcha,
     email: email.value,
   });
   if (res.data && res.data.success) {
@@ -21,7 +21,6 @@ async function signUp() {
 }
 
 function captchaVerified(token: string, eKey: string) {
-  console.log(token);
   captcha = token;
 }
 

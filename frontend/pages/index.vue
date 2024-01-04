@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { registerRuntimeCompiler } from 'nuxt/dist/app/compat/capi';
 import { useAccount, useConnect, useWalletClient } from 'use-wagmi';
 const data = ref(null);
 
@@ -6,7 +7,7 @@ const { vueApp } = useNuxtApp();
 const $papa = vueApp.config.globalProperties.$papa;
 
 const { isConnected } = useAccount();
-const { data: walletClient } = useWalletClient();
+const { data: walletClient, refetch } = useWalletClient();
 
 let jwt = null;
 
@@ -73,21 +74,18 @@ function parseUploadedFile(file?: File | null) {
 }
 
 async function login() {
-  if (!isConnected) {
-    await connect({ connector: connectors[0] });
-  } else {
-    const timestamp = new Date().getTime();
-    const message = 'test';
-    const signature = await walletClient.value.signMessage({ message: `${message}\n${timestamp}` });
-    const res = await $api.post('/login', {
-      signature,
-      timestamp,
-    });
-    jwt = res.data.jwt;
-    if (jwt) {
-      $api.setToken(jwt);
-      await getUsers();
-    }
+  await refetch();
+  const timestamp = new Date().getTime();
+  const message = 'test';
+  const signature = await walletClient.value.signMessage({ message: `${message}\n${timestamp}` });
+  const res = await $api.post('/login', {
+    signature,
+    timestamp,
+  });
+  jwt = res.data.jwt;
+  if (jwt) {
+    $api.setToken(jwt);
+    await getUsers();
   }
 }
 </script>
@@ -95,8 +93,11 @@ async function login() {
 <template>
   <div class="grid">
     <div class="text-lg">Email airdrop</div>
-    <Btn v-if="!isConnected || !data" type="primary" @click="login()">Connect wallet</Btn>
-    <div v-else>
+    <Btn v-if="!isConnected" type="primary" @click="connect({ connector: connectors[0] })"
+      >Connect wallet</Btn
+    >
+    <Btn v-if="isConnected && !data" type="primary" @click="login()">Login</Btn>
+    <div v-if="isConnected && data">
       <br />
       <n-upload
         :show-file-list="false"
