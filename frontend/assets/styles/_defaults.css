@@ -10,8 +10,8 @@ body,
 }
 
 body {
-  font-weight: 300;
-  font-size: 16px;
+  @apply text-white font-normal;
+  font-size: 14px;
 }
 
 h1,
@@ -58,4 +58,19 @@ button:not(.n-button) {
   border: none;
   padding: 0;
   cursor: pointer;
+}
+
+/* Change autfill styles:  */
+input:autofill,
+input:autofill:hover,
+input:autofill:focus,
+textarea:autofill,
+textarea:autofill:hover,
+textarea:autofill:focus,
+select:autofill,
+select:autofill:hover,
+select:autofill:focus {
+  border: none;
+  -webkit-text-fill-color: theme('colors.white');
+  -webkit-box-shadow: 0 0 0px 1000px #1e212b inset;
 }

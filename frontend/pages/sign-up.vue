@@ -1,48 +1,19 @@
 <script lang="ts" setup>
-import VueHcaptcha from '@hcaptcha/vue3-hcaptcha';
-const { vueApp } = useNuxtApp();
-const $route = useRoute();
-const email = ref(null);
-let captcha = null;
-
 useHead({
   title: 'Apillon email airdrop prebuilt solution',
-  titleTemplate: '',
 });
 
-async function signUp() {
-  const res = await $api.post('/users', {
-    token: captcha,
-    email: email.value,
-  });
-  if (res.data && res.data.success) {
-    alert('signed up');
-  }
-}
-
-function captchaVerified(token: string, eKey: string) {
-  captcha = token;
-}
-
-function captchaError(err: string) {
-  captcha = null;
-  console.log(err);
-}
-
-onMounted(async () => {});
+const registered = ref<boolean>(false);
 </script>
 
 <template>
-  <div class="grid">
-    <div class="text-lg">Sign up for airdrop</div>
-    <br />
-    <div>Input you email:</div>
-    <input v-model="email" type="text" placeholder="test@email.com" />
-    <vue-hcaptcha
-      sitekey="f363ce6d-7543-4284-9caa-cf3219723f04"
-      @verify="captchaVerified"
-      @error="captchaError"
-    ></vue-hcaptcha>
-    <Btn :disabled="!email && !captcha" type="primary" @click="signUp()">Sign up</Btn>
+  <div v-if="registered" class="max-w-xl mx-auto">
+    <h3 class="my-8">You have successfully signed up for NFT Airdrop.</h3>
+    <p>You will receive an email with a claim link. Open the link and follow the instructions.</p>
+  </div>
+  <div v-else class="max-w-xl mx-auto">
+    <h3 class="my-8">Sign up for airdrop</h3>
+
+    <FormSighUp @submit-success="registered = true" />
   </div>
 </template>

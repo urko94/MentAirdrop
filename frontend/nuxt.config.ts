@@ -26,6 +26,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       API_BASE: CONFIG.API_BASE || 'http://localhost:3001',
+      CAPTCHA_KEY: CONFIG.CAPTCHA_KEY || '10000000-ffff-ffff-ffff-000000000001',
       ENV: env || Environments.dev,
     },
   },
@@ -42,6 +43,7 @@ export default defineNuxtConfig({
     '@pinia-plugin-persistedstate/nuxt',
     '@vueuse/nuxt',
     'nuxt-icons',
+    '@nuxtjs/google-fonts',
   ],
 
   vite: {
@@ -127,6 +129,20 @@ export default defineNuxtConfig({
         //   onload: "this.media='all'",
         // },
       ],
+    },
+  },
+
+  googleFonts: {
+    useStylesheet: true,
+    display: 'swap',
+    download: false,
+    families: {
+      Inter: {
+        wght: [400],
+      },
+      'IBM Plex Sans': {
+        wght: [400, 700],
+      },
     },
   },
 

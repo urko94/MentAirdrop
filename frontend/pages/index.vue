@@ -1,91 +1,70 @@
 <script lang="ts" setup>
-import { registerRuntimeCompiler } from 'nuxt/dist/app/compat/capi';
+import { LoginResponse } from '~/components/parts/Header.vue';
 import { useAccount, useConnect, useWalletClient } from 'use-wagmi';
-const data = ref(null);
 
-const { vueApp } = useNuxtApp();
-const $papa = vueApp.config.globalProperties.$papa;
-
+const { error } = useMessage();
+const userStore = useUserStore();
+const { handleError } = useErrors();
 const { isConnected } = useAccount();
+const { connect, connectors } = useConnect();
 const { data: walletClient, refetch } = useWalletClient();
 
-let jwt = null;
-
-const { connect, connectors } = useConnect({
-  onSuccess() {
-    emit('connected');
-  },
+definePageMeta({
+  layout: 'admin',
 });
-
 useHead({
   title: 'Apillon email airdrop prebuilt solution',
-  titleTemplate: '',
 });
 
-async function getUsers() {
-  const res = await $api.get('/users');
-  data.value = res.data.items;
-}
+const data = ref<UserInterface[]>([]);
+const isLoggedIn = computed(() => isConnected.value && userStore.jwt);
 
 onMounted(async () => {
-  if (jwt) {
+  if (isLoggedIn.value) {
     await getUsers();
   }
 });
 
-function uploadFileRequest({ file, onError, onFinish }: NUploadCustomRequestOptions) {
-  if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel') {
-    console.warn(file.type);
-    // message.warning($i18n.t('validation.fileTypeNotCsv'));
-
-    /** Mark file as failed */
-    onError();
-    return;
+watch(
+  () => isLoggedIn.value,
+  async _ => {
+    if (isLoggedIn.value) {
+      await getUsers();
+    }
   }
-  parseUploadedFile(file.file);
-}
+);
 
-function parseUploadedFile(file?: File | null) {
-  if (!file) {
-    return;
-  }
-  console.log(file);
-
-  $papa.parse(file, {
-    header: false,
-    skipEmptyLines: true,
-    complete: async (results: CsvFileData) => {
-      if (results.data.length) {
-        const users = [];
-        for (const r of results.data) {
-          users.push({ email: r[0] });
-        }
-        await $api.post('/users', { users });
-        await getUsers();
-      } else {
-        alert('empty csv');
-      }
-    },
-    error: function (error: string) {
-      console.log(error);
-      alert('error reading csv');
-    },
-  });
+async function getUsers() {
+  const res = await $api.get<UsersResponse>('/users');
+  data.value = res.data.items;
 }
 
 async function login() {
   await refetch();
-  const timestamp = new Date().getTime();
-  const message = 'test';
-  const signature = await walletClient.value.signMessage({ message: `${message}\n${timestamp}` });
-  const res = await $api.post('/login', {
-    signature,
-    timestamp,
-  });
-  jwt = res.data.jwt;
-  if (jwt) {
-    $api.setToken(jwt);
-    await getUsers();
+
+  if (!walletClient.value) {
+    await connect({ connector: connectors.value[0] });
+
+    if (!walletClient.value) {
+      error('Could not connect with wallet');
+      return;
+    }
+  }
+  try {
+    const timestamp = new Date().getTime();
+    const message = 'test';
+    const signature = await walletClient.value.signMessage({ message: `${message}\n${timestamp}` });
+    const res = await $api.post<LoginResponse>('/login', {
+      signature,
+      timestamp,
+    });
+    userStore.jwt = res.data.jwt;
+    if (userStore.jwt) {
+      $api.setToken(userStore.jwt);
+      await getUsers();
+    }
+  } catch (e) {
+    handleError(e);
   }
 }
 </script>
@@ -93,29 +72,10 @@ async function login() {
 <template>
   <div class="grid">
     <div class="text-lg">Email airdrop</div>
-    <Btn v-if="!isConnected" type="primary" @click="connect({ connector: connectors[0] })"
-      >Connect wallet</Btn
-    >
-    <Btn v-if="isConnected && !data" type="primary" @click="login()">Login</Btn>
-    <div v-if="isConnected && data">
-      <br />
-      <n-upload
-        :show-file-list="false"
-        accept=".csv, application/vnd.ms-excel"
-        :custom-request="uploadFileRequest"
-      >
-        <Btn type="secondary"> Choose File </Btn>
-      </n-upload>
-      <Btn type="primary" @click="modalMetadataAttributesVisible = true"> Confirm </Btn>
-      <br />
-      <div class="grid grid-cols-4 gap-4 font-bold">
-        <div>Email:</div>
-        <div>Status:</div>
-      </div>
-      <div v-for="(item, index) in data" :key="index" class="grid grid-cols-4 gap-4">
-        <div>{{ item.email }}</div>
-        <div>{{ item.airdrop_status }}</div>
-      </div>
-    </div>
+    <Btn v-if="!isConnected" type="primary" @click="connect({ connector: connectors[0] })">
+      Connect wallet
+    </Btn>
+    <Btn v-else-if="!data" type="primary" @click="login()">Login</Btn>
+    <TableUsers v-else :users="data" />
   </div>
 </template>
