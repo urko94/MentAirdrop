@@ -26,7 +26,10 @@ export async function checkCaptcha(captchaToken: string): Promise<boolean> {
     throwCodeException(ValidatorErrorCode.CAPTCHA_NOT_PRESENT);
   }
 
-  if (!(await verifyCaptcha(captchaToken))) {
+  if (
+    env.APP_ENV != AppEnvironment.LOCAL_DEV! &&
+    (await verifyCaptcha(captchaToken))
+  ) {
     throwCodeException(ValidatorErrorCode.CAPTCHA_INVALID);
   }
 

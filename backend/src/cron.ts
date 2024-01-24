@@ -72,14 +72,17 @@ export class Cron {
         }
       }
 
-      const sql = `
+      if (updates.length) {
+        const sql = `
         INSERT INTO user (id, email, airdrop_status, email_sent_time)
         VALUES ${updates.join(",")}
         ON DUPLICATE KEY UPDATE
         airdrop_status = VALUES(airdrop_status),
         email_sent_time = VALUES(email_sent_time)`;
 
-      await conn.execute(sql);
+        await conn.execute(sql);
+      }
+
       await conn.commit();
     } catch (e) {
       writeLog(LogType.ERROR, e, "cron.ts", "sendEmail");
