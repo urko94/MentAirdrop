@@ -76,6 +76,11 @@ async function login() {
       Connect wallet
     </Btn>
     <Btn v-else-if="!data" type="primary" @click="login()">Login</Btn>
-    <TableUsers v-else :users="data" />
+    <div v-else>
+      <Btn type="primary" @click="getUsers()">
+        Refresh
+      </Btn>
+      <TableUsers :users="data" />
+    </div>
   </div>
 </template>

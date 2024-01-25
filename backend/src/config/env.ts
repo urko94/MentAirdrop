@@ -43,6 +43,8 @@ export interface IEnv {
   COLLECTION_UUID: string;
 
   CAPTCHA_SECRET: string;
+
+  CLAIM_EXPIRES_IN: number;
 }
 /**
  * Load variables from .env.
@@ -131,4 +133,9 @@ export const env = {
    * Captcha
    */
   CAPTCHA_SECRET: process.env["CAPTCHA_SECRET"],
+
+  /**
+   * Number of hours user have to claim NFT, before they are removed from line and become un eligible to claim
+   */
+  CLAIM_EXPIRES_IN: parseInt(process.env["CLAIM_EXPIRES_IN"]) || 72,
 };

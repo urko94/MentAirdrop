@@ -21,6 +21,8 @@ export enum AirdropStatus {
   TRANSACTION_CREATED = 5,
   AIRDROP_COMPLETED = 6,
   AIRDROP_ERROR = 7,
+  AIRDROP_CLAIM_EXPIRED = 8,
+  IN_WAITING_LINE = 9,
 }
 
 export class User extends BaseSqlModel {
