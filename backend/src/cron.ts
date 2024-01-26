@@ -14,24 +14,14 @@ export class Cron {
 
   constructor() {
     this.cronJobs.push(new CronJob("* * * * *", this.sendEmail, null, false));
-  }
-
-  async start() {
-    const collection = await new Nft({
-      key: env.APILLON_KEY,
-      secret: env.APILLON_SECRET,
-      logLevel: LogLevel.VERBOSE,
-    })
-      .collection(env.COLLECTION_UUID)
-      .get();
-
-    /**If collection has limited supply, start job which will manage user airdrop waiting line*/
-    if (collection.maxSupply > 0) {
+    if (env.MAX_SUPPLY > 0) {
       this.cronJobs.push(
         new CronJob("* * * * *", this.processExpiredClaims, null, false)
       );
     }
+  }
 
+  async start() {
     for (const cronJob of this.cronJobs) {
       cronJob.start();
     }
@@ -47,16 +37,8 @@ export class Cron {
   async sendEmail() {
     const mysql = await MysqlConnectionManager.getInstance();
 
-    const collection = await new Nft({
-      key: env.APILLON_KEY,
-      secret: env.APILLON_SECRET,
-      logLevel: LogLevel.VERBOSE,
-    })
-      .collection(env.COLLECTION_UUID)
-      .get();
-
     let availableNftLeft = 0;
-    if (collection.maxSupply) {
+    if (env.MAX_SUPPLY) {
       const res = await mysql.db.execute(
         `SELECT COUNT(id) as total FROM user WHERE
           airdrop_status IN (
@@ -70,7 +52,7 @@ export class Cron {
        `
       );
       const numOfReservations = res[0][0].total;
-      availableNftLeft = collection.maxSupply - numOfReservations;
+      availableNftLeft = env.MAX_SUPPLY - numOfReservations;
     }
 
     const conn = await mysql.start();
@@ -91,7 +73,7 @@ export class Cron {
 
       for (let i = 0; i < users.length; i++) {
         try {
-          if (!collection.maxSupply || i < availableNftLeft) {
+          if (!env.MAX_SUPPLY || i < availableNftLeft) {
             const token = await generateEmailAirdropToken(users[i].email);
             await SmtpSendTemplate(
               [users[i].email],

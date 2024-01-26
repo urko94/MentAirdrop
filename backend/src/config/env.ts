@@ -128,6 +128,7 @@ export const env = {
   APILLON_KEY: process.env["APILLON_KEY"],
   APILLON_SECRET: process.env["APILLON_SECRET"],
   COLLECTION_UUID: process.env["COLLECTION_UUID"],
+  MAX_SUPPLY: parseInt(process.env["MAX_SUPPLY"]) || 0,
 
   /**
    * Captcha
