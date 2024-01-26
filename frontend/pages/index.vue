@@ -1,81 +1,19 @@
 <script lang="ts" setup>
-import { LoginResponse } from '~/components/parts/Header.vue';
-import { useAccount, useConnect, useWalletClient } from 'use-wagmi';
-
-const { error } = useMessage();
-const userStore = useUserStore();
-const { handleError } = useErrors();
-const { isConnected } = useAccount();
-const { connect, connectors } = useConnect();
-const { data: walletClient, refetch } = useWalletClient();
-
-definePageMeta({
-  layout: 'admin',
-});
 useHead({
   title: 'Apillon email airdrop prebuilt solution',
 });
 
-const data = ref<UserInterface[]>([]);
-const isLoggedIn = computed(() => isConnected.value && userStore.jwt);
-
-onMounted(async () => {
-  if (isLoggedIn.value) {
-    await getUsers();
-  }
-});
-
-watch(
-  () => isLoggedIn.value,
-  async _ => {
-    if (isLoggedIn.value) {
-      await getUsers();
-    }
-  }
-);
-
-async function getUsers() {
-  const res = await $api.get<UsersResponse>('/users');
-  data.value = res.data.items;
-}
-
-async function login() {
-  await refetch();
-
-  if (!walletClient.value) {
-    await connect({ connector: connectors.value[0] });
-
-    if (!walletClient.value) {
-      error('Could not connect with wallet');
-      return;
-    }
-  }
-  try {
-    const timestamp = new Date().getTime();
-    const message = 'test';
-    const signature = await walletClient.value.signMessage({ message: `${message}\n${timestamp}` });
-    const res = await $api.post<LoginResponse>('/login', {
-      signature,
-      timestamp,
-    });
-    userStore.jwt = res.data.jwt;
-    if (userStore.jwt) {
-      $api.setToken(userStore.jwt);
-      await getUsers();
-    }
-  } catch (e) {
-    handleError(e);
-  }
-}
+const registered = ref<boolean>(false);
 </script>
 
 <template>
-  <div class="grid">
-    <div class="text-lg">Email airdrop</div>
-    <Btn v-if="!isConnected" type="primary" @click="connect({ connector: connectors[0] })">
-      Connect wallet
-    </Btn>
-    <Btn v-else-if="!data" type="primary" @click="login()">Login</Btn>
-    <TableUsers v-else :users="data" />
+  <div v-if="registered" class="max-w-sm mx-auto">
+    <h3 class="my-8">You have successfully signed up for NFT Airdrop.</h3>
+    <p>You will receive an email with a claim link. Open the link and follow the instructions.</p>
+  </div>
+  <div v-else class="max-w-sm w-full mx-auto">
+    <h3 class="my-8">Sign up for airdrop</h3>
+
+    <FormSighUp @submit-success="registered = true" />
   </div>
 </template>

@@ -91,4 +91,10 @@ declare global {
   }
 
   type StatisticsResponse = GeneralResponse<StatisticsInterface>;
+
+  type Metadata = {
+    name: string;
+    description: string;
+    image: string;
+  };
 }
