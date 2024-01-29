@@ -112,7 +112,7 @@ export class Cron {
         }
       }
 
-      if (updates.length) {
+      if (updates.length > 0) {
         const sql = `
         INSERT INTO user (id, email, airdrop_status, email_sent_time)
         VALUES ${updates.join(",")}
