@@ -68,9 +68,13 @@ export async function resolve(req: Request, res: Response): Promise<void> {
     logLevel: LogLevel.VERBOSE,
   }).collection(env.COLLECTION_UUID);
 
+  let response = null;
   try {
-    const res = await collection.mint(wallet, 1);
-    user.airdrop_status = res.success
+    response = await collection.mint({
+      receivingAddress: wallet,
+      quantity: 1,
+    });
+    user.airdrop_status = response.success
       ? AirdropStatus.AIRDROP_COMPLETED
       : AirdropStatus.AIRDROP_ERROR;
   } catch (e) {
@@ -85,5 +89,12 @@ export async function resolve(req: Request, res: Response): Promise<void> {
   }
 
   await user.update();
-  return res.respond(200, { success: "ok" });
+  if (response && response.success) {
+    return res.respond(200, {
+      success: "ok",
+      transactionHash: response.transactionHash,
+    });
+  } else {
+    throw new ResourceError(RouteErrorCode.AIRDROP_ERROR);
+  }
 }
