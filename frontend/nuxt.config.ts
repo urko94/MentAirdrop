@@ -25,9 +25,8 @@ const meta = {
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
-      API_BASE: CONFIG.API_BASE || 'http://localhost:3001',
-      CAPTCHA_KEY: CONFIG.CAPTCHA_KEY || '10000000-ffff-ffff-ffff-000000000001',
       ENV: env || Environments.dev,
+      ...CONFIG,
     },
   },
 

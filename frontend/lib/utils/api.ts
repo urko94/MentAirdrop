@@ -149,8 +149,6 @@ class Api {
   }
 
   onForbidden(_errorData: any, _requestData: Request | any) {
-    const route = useRoute();
-    const router = useRouter();
     const user = useUserStore();
 
     /**
@@ -160,13 +158,6 @@ class Api {
     if (user.loggedIn) {
       user.logout();
     }
-
-    router.replace({
-      path: '/',
-      query: {
-        to: getEncodedPathAndQuery(route),
-      },
-    });
   }
 }
 
