@@ -39,7 +39,7 @@ function transactionLink(transactionHash?: string | null): string {
 
     <div class="rounded-lg overflow-hidden mb-8">
       <img :src="metadata.image" class="" width="400" height="400" alt="nft" />
-
+      <div class="p-6 bg-bg-light">
         <h5>{{ metadata.name }}</h5>
       </div>
       <div class="mt-4 text-center">
@@ -47,7 +47,7 @@ function transactionLink(transactionHash?: string | null): string {
         <a
           v-if="txHash"
           :href="transactionLink(txHash)"
-          class="text-yellow hover:underline"
+          class="text-black hover:underline"
           target="_blank"
         >
           Transaction: {{ shortHash(txHash) }}
@@ -60,7 +60,7 @@ function transactionLink(transactionHash?: string | null): string {
       size="large"
       :href="`https://twitter.com/intent/tweet?text=Display Your '${metadata.name}' NFT Collectible by sharing it on X.`"
     >
-      <span class="inline-flex gap-2 items-center">
+      <span class="inline-flex gap-2 items-center text-black">
         <NuxtIcon name="x" class="text-xl" />
         <span>Share on X</span>
       </span>
