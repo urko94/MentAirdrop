@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import SuperRareSvg from '~/assets/images/superrare.jpg';
+import SuperRareJpg from '~/images/superrare.jpg';
 useHead({
   title: 'Apillon email airdrop prebuilt solution',
 });
@@ -20,7 +20,7 @@ useHead({
       </div>
     </div>
     <div class="flex-cc relative w-full">
-      <img :src="SuperRareSvg" width="461" height="461" alt="Super rare NFT" />
+      <img :src="SuperRareJpg" width="461" height="461" alt="Super rare NFT" />
     </div>
   </div>
 </template>

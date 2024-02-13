@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import VueHcaptcha from '@hcaptcha/vue3-hcaptcha';
+import colors from '~/tailwind.colors';
 import { FormInst, FormRules, FormValidationError } from 'naive-ui';
 import { ruleRequired } from '~/lib/utils/validation';
 
@@ -106,6 +107,7 @@ function onCaptchaVerify(token: string) {
       <Btn
         type="primary"
         size="large"
+        :color="colors.konference"
         :loading="loading"
         :disabled="!formData.email || !formData.token"
         @click="handleSubmit"
