@@ -1,19 +1,26 @@
 <script lang="ts" setup>
+import SuperRareSvg from '~/assets/images/superrare.jpg';
 useHead({
   title: 'Apillon email airdrop prebuilt solution',
 });
-
-const registered = ref<boolean>(false);
 </script>
 
 <template>
-  <div v-if="registered" class="max-w-sm mx-auto">
-    <h3 class="my-8">You have successfully signed up for NFT Airdrop.</h3>
-    <p>You will receive an email with a claim link. Open the link and follow the instructions.</p>
-  </div>
-  <div v-else class="max-w-sm w-full mx-auto">
-    <h3 class="my-8">Sign up for airdrop</h3>
+  <!-- #region UNSTOPPABLE NFTS -->
+  <div class="my-20 flex flex-col gap-x-12 gap-y-8 md:flex-row lg:my-32">
+    <div class="max-w-2xl md:pr-12">
+      <span class="mb-2 inline-block text-xs font-bold uppercase tracking-[0.2em] text-info">The Shape of MENT to Come</span>
+      <h1>Sign up and win your MENT token</h1>
 
-    <FormSighUp @submit-success="registered = true" />
+      <p class="body-lg mb-6">
+        By signing up, you’ll be in the game for the hottest perks in the form of MENT token
+      </p>
+      <div class="max-w-sm">
+        <FormSighUp btn-text="Sign up" />
+      </div>
+    </div>
+    <div class="flex-cc relative w-full">
+      <img :src="SuperRareSvg" width="461" height="461" alt="Super rare NFT" />
+    </div>
   </div>
 </template>

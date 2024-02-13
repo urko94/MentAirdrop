@@ -32,8 +32,9 @@ function transactionLink(transactionHash?: string | null): string {
 <template>
   <div v-if="metadata" class="max-w-md w-full md:px-6 my-12 mx-auto">
     <div class="my-8 text-center">
-      <h3 class="mb-6">Celebrate your triumph!</h3>
-      <p>Display Your '{{ metadata.name }}' NFT Collectible on Social Media for All to Envy.</p>
+      <h3 class="mb-6">AchieveMENT unlocked!</h3>
+      <p>You are now a proud owner of a MENT token!</p>
+      <p>Display Your '{{ metadata.name }}' NFT collectible by sharing it on X.</p>
     </div>
 
     <div class="rounded-lg overflow-hidden mb-8">
@@ -58,7 +59,7 @@ function transactionLink(transactionHash?: string | null): string {
     <Btn
       type="secondary"
       size="large"
-      :href="`https://twitter.com/intent/tweet?text=Display Your '${metadata.name}' NFT Collectible on Social Media for All to Envy.`"
+      :href="`https://twitter.com/intent/tweet?text=Display Your '${metadata.name}' NFT Collectible by sharing it on X.`"
     >
       <span class="inline-flex gap-2 items-center">
         <NuxtIcon name="x" class="text-xl" />

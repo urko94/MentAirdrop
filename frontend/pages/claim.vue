@@ -89,15 +89,21 @@ async function loadNft() {
   <div v-else class="max-w-md w-full md:px-6 my-12 mx-auto">
     <img :src="SuccessSVG" class="mx-auto" width="165" height="169" alt="airdrop" />
 
-    <div class="my-8 text-center">
-      <h3 class="mb-6">Great Success!</h3>
+    <div v-if="!isConnected" class="my-8 text-center">
+      <h3 class="mb-6">Almost there!</h3>
       <p>
-        To join this NFT airdrop, you need to connect your EVM compatible wallet. This step is
-        crucial for securely receiving and managing the airdropped NFTs.
+        But first, connect compatible digital wallet. This step is crucial for securely receiving and managing the MENT token you’ll about to receive.
+      </p>
+    </div>
+
+    <div v-else class="my-8 text-center">
+      <h3 class="mb-6">Great success!</h3>
+      <p>
+        You’ve connected your wallet and you are one click away from your bonus-filled MENT token. See what the future of MENT holds for you 🔮
       </p>
     </div>
 
     <ConnectWallet v-if="!isConnected" size="large" />
-    <Btn v-else size="large" :loading="loading" @click="claimAirdrop()">Claim airdrop</Btn>
+    <Btn v-else size="large" :loading="loading" @click="claimAirdrop()">Claim your MENT token</Btn>
   </div>
 </template>

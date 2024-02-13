@@ -10,10 +10,9 @@ const { connect, connectors, pendingConnector } = useConnect();
     <img :src="WalletSVG" class="mx-auto" width="241" height="240" alt="wallet" />
 
     <div class="my-8 text-center">
-      <h3 class="mb-6">Choose wallet</h3>
+      <h3 class="mb-6">Choose a wallet</h3>
       <p>
-        To join this NFT airdrop, you need to connect your EVM compatible wallet. This step is
-        crucial for securely receiving and managing the airdropped NFTs.
+        To proceed to claiming your MENT token, choose your preferred wallet and connect it by clicking below.
       </p>
     </div>
 
