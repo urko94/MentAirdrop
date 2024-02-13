@@ -1,5 +1,5 @@
 <template>
-  <img src="/images/logo/apillon.png" :width="width" :height="height" :alt="alt" />
+  <img src="~/assets/images/MENT_Logo-01.png" :width="width" :height="height" :alt="alt" />
 </template>
 
 <script lang="ts" setup>

@@ -9,6 +9,9 @@
     >
       <slot />
     </div>
+    <div class="justify-center">
+      <Footer></Footer>
+    </div>
   </n-layout>
 </template>
 
