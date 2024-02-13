@@ -40,7 +40,6 @@ function transactionLink(transactionHash?: string | null): string {
     <div class="rounded-lg overflow-hidden mb-8">
       <img :src="metadata.image" class="" width="400" height="400" alt="nft" />
 
-      <div class="p-6 bg-bg-lighter">
         <h5>{{ metadata.name }}</h5>
       </div>
       <div class="mt-4 text-center">
