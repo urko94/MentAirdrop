@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import SuperRareJpg from '~/images/superrare.jpg';
 useHead({
-  title: 'Apillon email airdrop prebuilt solution',
+  title: 'MENT airdrop',
 });
 </script>
 
