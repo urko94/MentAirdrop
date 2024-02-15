@@ -32,14 +32,14 @@ function transactionLink(transactionHash?: string | null): string {
 <template>
   <div v-if="metadata" class="max-w-md w-full md:px-6 my-12 mx-auto">
     <div class="my-8 text-center">
-      <h3 class="mb-6">Celebrate your triumph!</h3>
-      <p>Display Your '{{ metadata.name }}' NFT Collectible on Social Media for All to Envy.</p>
+      <h3 class="mb-6">AchieveMENT unlocked!</h3>
+      <p>You are now a proud owner of a MENT token!</p>
+      <p>Display Your '{{ metadata.name }}' NFT collectible by sharing it on X.</p>
     </div>
 
     <div class="rounded-lg overflow-hidden mb-8">
       <img :src="metadata.image" class="" width="400" height="400" alt="nft" />
-
-      <div class="p-6 bg-bg-lighter">
+      <div class="p-6 bg-bg-light">
         <h5>{{ metadata.name }}</h5>
       </div>
       <div class="mt-4 text-center">
@@ -47,7 +47,7 @@ function transactionLink(transactionHash?: string | null): string {
         <a
           v-if="txHash"
           :href="transactionLink(txHash)"
-          class="text-yellow hover:underline"
+          class="text-black hover:underline"
           target="_blank"
         >
           Transaction: {{ shortHash(txHash) }}
@@ -58,9 +58,9 @@ function transactionLink(transactionHash?: string | null): string {
     <Btn
       type="secondary"
       size="large"
-      :href="`https://twitter.com/intent/tweet?text=Display Your '${metadata.name}' NFT Collectible on Social Media for All to Envy.`"
+      :href="`https://twitter.com/intent/tweet?text=Display Your '${metadata.name}' NFT Collectible by sharing it on X.`"
     >
-      <span class="inline-flex gap-2 items-center">
+      <span class="inline-flex gap-2 items-center text-black">
         <NuxtIcon name="x" class="text-xl" />
         <span>Share on X</span>
       </span>

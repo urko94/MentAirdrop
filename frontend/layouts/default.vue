@@ -9,16 +9,22 @@
     >
       <slot />
     </div>
+    <div ref="footerRef" class="justify-center">
+      <Footer></Footer>
+    </div>
   </n-layout>
 </template>
 
 <script lang="ts" setup>
 /** Heading height */
 const headerRef = ref<HTMLElement>();
+const footerRef = ref<HTMLElement>();
 
 const containerStyle = computed(() => {
+  const hHeight = headerRef.value?.clientHeight || 0;
+  const fHeight = footerRef.value?.clientHeight || 0;
   return {
-    minHeight: `calc(100dvh - ${headerRef.value?.clientHeight || 0}px)`,
+    minHeight: `calc(100dvh - ${hHeight + fHeight}px)`,
   };
 });
 </script>

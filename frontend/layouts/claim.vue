@@ -6,6 +6,9 @@
     <div class="container h-full pb-8 lg:pb-24 flex flex-col justify-center" :style="containerStyle">
       <slot />
     </div>
+    <div>
+      <Footer />
+    </div>
   </n-layout>
 </template>
 

@@ -57,7 +57,7 @@ h6 {
 }
 
 p {
-  @apply body-md text-body;
+  @apply body-md text-black;
 
   + h2,
   + .h2,

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import VueHcaptcha from '@hcaptcha/vue3-hcaptcha';
+import colors from '~/tailwind.colors';
 import { FormInst, FormRules, FormValidationError } from 'naive-ui';
 import { ruleRequired } from '~/lib/utils/validation';
 
@@ -7,6 +8,8 @@ type SignupForm = {
   email: string | null;
   token?: any;
 };
+
+const router = useRouter();
 
 const message = useMessage();
 const emit = defineEmits(['submitSuccess']);
@@ -59,6 +62,8 @@ async function signUp() {
 
     if (res.data && res.data.success) {
       emit('submitSuccess');
+
+      router.push({ path: '/success' });
     }
   } catch (e) {
     handleError(e);
@@ -75,11 +80,11 @@ function onCaptchaVerify(token: string) {
 <template>
   <n-form ref="formRef" :model="formData" :rules="rules" @submit.prevent="handleSubmit">
     <!--  Login email -->
-    <n-form-item path="email" label="Email">
+    <n-form-item path="email">
       <n-input
         v-model:value="formData.email"
         :input-props="{ type: 'email' }"
-        placeholder="test@email.com"
+        placeholder="Your e-mail"
         clearable
       />
     </n-form-item>
@@ -102,6 +107,7 @@ function onCaptchaVerify(token: string) {
       <Btn
         type="primary"
         size="large"
+        :color="colors.konference"
         :loading="loading"
         :disabled="!formData.email || !formData.token"
         @click="handleSubmit"
